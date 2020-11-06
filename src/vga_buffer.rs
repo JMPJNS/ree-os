@@ -27,7 +27,7 @@ pub enum Color {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(transparent)]
-struct ColorCode(u8);
+pub struct ColorCode(u8);
 
 impl ColorCode {
     fn new(foreground: Color, background: Color) -> ColorCode {
@@ -113,6 +113,14 @@ impl Writer {
 
     pub fn set_color(&mut self, foreground: Color, background: Color) {
         self.color_code = ColorCode::new(foreground, background)
+    }
+
+    pub fn set_color_code(&mut self, color: ColorCode) {
+        self.color_code = color
+    }
+
+    pub fn get_color(&self) -> ColorCode {
+        self.color_code
     }
 }
 
