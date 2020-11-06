@@ -5,13 +5,15 @@ mod vga_buffer;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    vga_buffer::print_something();
+
+    panic!("O no errors");
 
     loop {}
 }
 
-/// This function is called on panic.
 #[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
+fn panic(info: &PanicInfo) -> ! {
+    vga_buffer::WRITER.lock().set_color(vga_buffer::Color::Red, vga_buffer::Color::Black);
+    println!("{}", info);
     loop {}
 }
