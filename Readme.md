@@ -1,6 +1,6 @@
 # Required rust flags
 
-export RUSTFLAGS="-C linker=lld --sysroot /path/to/free-os/target/sysroot"
+export RUSTFLAGS="-C linker=lld --sysroot /path/to/ree-os/target/sysroot"
 
 # External Resources
 

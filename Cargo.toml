@@ -1,5 +1,5 @@
 [package]
-name = "free-os"
+name = "ree-os"
 version = "0.1.0"
 authors = ["Jonas <jonas@jmp.blue>"]
 edition = "2018"
