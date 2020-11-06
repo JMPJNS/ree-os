@@ -4,24 +4,31 @@
 #![test_runner(ree_os::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
-use core::panic::PanicInfo;
-
 pub mod vga_buffer;
+
+use core::panic::PanicInfo;
+use vga_buffer::Color;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");
+    ree_os::init();
+
+    // unsafe {
+    //     *(0xdeadbeef as *mut u64) = 42;
+    // };
 
     #[cfg(test)]
     test_main();
 
+    println!(":D");
     loop {}
 }
 
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    vga_buffer::WRITER.lock().set_color(vga_buffer::Color::Red, vga_buffer::Color::Black);
+    vga_buffer::WRITER.lock().set_color(Color::Red, Color::Black);
     println!("\n{}", info);
     loop {}
 }
