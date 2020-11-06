@@ -36,6 +36,7 @@ fn test_runner(tests: &[&dyn Fn()]) {
         test();
     }
     vga_buffer::WRITER.lock().set_color_code(prev_color);
+    exit_qemu(QemuExitCode::Success)
 }
 
 #[panic_handler]
@@ -43,4 +44,20 @@ fn panic(info: &PanicInfo) -> ! {
     vga_buffer::WRITER.lock().set_color(vga_buffer::Color::Red, vga_buffer::Color::Black);
     println!("\n{}", info);
     loop {}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(u32)]
+pub enum QemuExitCode {
+    Success = 0x10,
+    Failed = 0x11,
+}
+
+pub fn exit_qemu(exit_code: QemuExitCode) {
+    use x86_64::instructions::port::Port;
+
+    unsafe {
+        let mut port = Port::new(0xf4);
+        port.write(exit_code as u32);
+    }
 }
